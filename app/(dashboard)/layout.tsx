@@ -35,12 +35,6 @@ function UserMenu() {
   if (!user) {
     return (
       <>
-        <Link
-          href="/pricing"
-          className="text-sm font-medium text-gray-700 hover:text-gray-900"
-        >
-          Pricing
-        </Link>
         <Button asChild className="rounded-full">
           <Link href="/sign-up">Sign Up</Link>
         </Button>
@@ -91,9 +85,6 @@ function Header() {
         <NavMenu className="hidden md:block" />
 
         <div className="flex items-center gap-3">
-          <Button variant="outline" className="hidden sm:inline-flex">
-            Sign In
-          </Button>
           <Suspense fallback={<div className="h-9" />}>
             <UserMenu />
           </Suspense>

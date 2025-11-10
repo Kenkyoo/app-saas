@@ -1,24 +1,27 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { customerPortalAction } from "@/lib/payments/actions";
+import { useActionState } from "react";
+import { TeamDataWithMembers, User } from "@/lib/db/schema";
+import { removeTeamMember, inviteTeamMember } from "@/app/(login)/actions";
+import useSWR from "swr";
+import { Suspense } from "react";
+import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Loader2, PlusCircle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
+  CardAction,
   CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardFooter
-} from '@/components/ui/card';
-import { customerPortalAction } from '@/lib/payments/actions';
-import { useActionState } from 'react';
-import { TeamDataWithMembers, User } from '@/lib/db/schema';
-import { removeTeamMember, inviteTeamMember } from '@/app/(login)/actions';
-import useSWR from 'swr';
-import { Suspense } from 'react';
-import { Input } from '@/components/ui/input';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
-import { Loader2, PlusCircle } from 'lucide-react';
+} from "@/components/ui/card";
 
 type ActionState = {
   error?: string;
@@ -38,36 +41,38 @@ function SubscriptionSkeleton() {
 }
 
 function ManageSubscription() {
-  const { data: teamData } = useSWR<TeamDataWithMembers>('/api/team', fetcher);
+  const { data: teamData } = useSWR<TeamDataWithMembers>("/api/team", fetcher);
 
   return (
-    <Card className="mb-8">
+    <Card className="@container/card">
       <CardHeader>
-        <CardTitle>Team Subscription</CardTitle>
+        <CardDescription>Team Subscription</CardDescription>
+        <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+          Current Plan: {teamData?.planName || "Free"}
+        </CardTitle>
+        <CardAction>
+          <Badge variant="outline">
+            Current Plan: {teamData?.planName || "Free"}
+          </Badge>
+        </CardAction>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-            <div className="mb-4 sm:mb-0">
-              <p className="font-medium">
-                Current Plan: {teamData?.planName || 'Free'}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {teamData?.subscriptionStatus === 'active'
-                  ? 'Billed monthly'
-                  : teamData?.subscriptionStatus === 'trialing'
-                  ? 'Trial period'
-                  : 'No active subscription'}
-              </p>
-            </div>
-            <form action={customerPortalAction}>
-              <Button type="submit" variant="outline">
-                Manage Subscription
-              </Button>
-            </form>
-          </div>
+      <CardFooter className="flex-col items-start gap-1.5 text-sm">
+        <div className="line-clamp-1 flex gap-2 font-medium">
+          Trending up this month
         </div>
-      </CardContent>
+        <div className="text-muted-foreground">
+          {teamData?.subscriptionStatus === "active"
+            ? "Billed monthly"
+            : teamData?.subscriptionStatus === "trialing"
+              ? "Trial period"
+              : "No active subscription"}
+        </div>
+      </CardFooter>
+      <form action={customerPortalAction}>
+        <Button type="submit" variant="outline">
+          Manage Subscription
+        </Button>
+      </form>
     </Card>
   );
 }
@@ -94,14 +99,14 @@ function TeamMembersSkeleton() {
 }
 
 function TeamMembers() {
-  const { data: teamData } = useSWR<TeamDataWithMembers>('/api/team', fetcher);
+  const { data: teamData } = useSWR<TeamDataWithMembers>("/api/team", fetcher);
   const [removeState, removeAction, isRemovePending] = useActionState<
     ActionState,
     FormData
   >(removeTeamMember, {});
 
-  const getUserDisplayName = (user: Pick<User, 'id' | 'name' | 'email'>) => {
-    return user.name || user.email || 'Unknown User';
+  const getUserDisplayName = (user: Pick<User, "id" | "name" | "email">) => {
+    return user.name || user.email || "Unknown User";
   };
 
   if (!teamData?.teamMembers?.length) {
@@ -118,61 +123,63 @@ function TeamMembers() {
   }
 
   return (
-    <Card className="mb-8">
+    <Card className="@container/card">
       <CardHeader>
-        <CardTitle>Team Members</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ul className="space-y-4">
-          {teamData.teamMembers.map((member, index) => (
-            <li key={member.id} className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <Avatar>
-                  {/* 
-                    This app doesn't save profile images, but here
-                    is how you'd show them:
+        <CardDescription>Team Members</CardDescription>
+        <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+          <ul className="space-y-4">
+            {teamData.teamMembers.map((member, index) => (
+              <li key={member.id} className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <Avatar>
+                    {/*
+                      This app doesn't save profile images, but here
+                      is how you'd show them:
 
-                    <AvatarImage
-                      src={member.user.image || ''}
-                      alt={getUserDisplayName(member.user)}
-                    />
-                  */}
-                  <AvatarFallback>
-                    {getUserDisplayName(member.user)
-                      .split(' ')
-                      .map((n) => n[0])
-                      .join('')}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="font-medium">
-                    {getUserDisplayName(member.user)}
-                  </p>
-                  <p className="text-sm text-muted-foreground capitalize">
-                    {member.role}
-                  </p>
+                      <AvatarImage
+                        src={member.user.image || ''}
+                        alt={getUserDisplayName(member.user)}
+                      />
+                    */}
+                    <AvatarFallback>
+                      {getUserDisplayName(member.user)
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="font-medium">
+                      {getUserDisplayName(member.user)}
+                    </p>
+                    <p className="text-sm text-muted-foreground capitalize">
+                      {member.role}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              {index > 1 ? (
-                <form action={removeAction}>
-                  <input type="hidden" name="memberId" value={member.id} />
-                  <Button
-                    type="submit"
-                    variant="outline"
-                    size="sm"
-                    disabled={isRemovePending}
-                  >
-                    {isRemovePending ? 'Removing...' : 'Remove'}
-                  </Button>
-                </form>
-              ) : null}
-            </li>
-          ))}
-        </ul>
+                {index > 1 ? (
+                  <form action={removeAction}>
+                    <input type="hidden" name="memberId" value={member.id} />
+                    <Button
+                      type="submit"
+                      variant="outline"
+                      size="sm"
+                      disabled={isRemovePending}
+                    >
+                      {isRemovePending ? "Removing..." : "Remove"}
+                    </Button>
+                  </form>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </CardTitle>
+      </CardHeader>
+      <CardFooter className="flex-col items-start gap-1.5 text-sm">
         {removeState?.error && (
           <p className="text-red-500 mt-4">{removeState.error}</p>
         )}
-      </CardContent>
+      </CardFooter>
     </Card>
   );
 }
@@ -188,19 +195,22 @@ function InviteTeamMemberSkeleton() {
 }
 
 function InviteTeamMember() {
-  const { data: user } = useSWR<User>('/api/user', fetcher);
-  const isOwner = user?.role === 'owner';
+  const { data: user } = useSWR<User>("/api/user", fetcher);
+  const isOwner = user?.role === "owner";
   const [inviteState, inviteAction, isInvitePending] = useActionState<
     ActionState,
     FormData
   >(inviteTeamMember, {});
 
   return (
-    <Card>
+    <Card className="@container/card">
       <CardHeader>
-        <CardTitle>Invite Team Member</CardTitle>
+        <CardDescription>Invite Team Member</CardDescription>
+        <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+          $1,250.00
+        </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardAction>
         <form action={inviteAction} className="space-y-4">
           <div>
             <Label htmlFor="email" className="mb-2">
@@ -257,7 +267,7 @@ function InviteTeamMember() {
             )}
           </Button>
         </form>
-      </CardContent>
+      </CardAction>
       {!isOwner && (
         <CardFooter>
           <p className="text-sm text-muted-foreground">
@@ -271,8 +281,7 @@ function InviteTeamMember() {
 
 export default function SettingsPage() {
   return (
-    <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium mb-6">Team Settings</h1>
+    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
       <Suspense fallback={<SubscriptionSkeleton />}>
         <ManageSubscription />
       </Suspense>
@@ -282,6 +291,6 @@ export default function SettingsPage() {
       <Suspense fallback={<InviteTeamMemberSkeleton />}>
         <InviteTeamMember />
       </Suspense>
-    </section>
+    </div>
   );
 }
