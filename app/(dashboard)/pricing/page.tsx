@@ -1,5 +1,6 @@
 import { checkoutAction } from "@/lib/payments/actions";
-import { Check } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { CircleCheck } from "lucide-react";
 import { getStripePrices, getStripeProducts } from "@/lib/payments/stripe";
 import { SubmitButton } from "./submit-button";
 
@@ -25,8 +26,11 @@ export default async function PricingPage() {
   );
 
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="grid md:grid-cols-2 gap-8 max-w-xl mx-auto">
+    <div className="min-h-screen flex flex-col items-center justify-center py-12 px-6">
+      <h1 className="text-5xl sm:text-6xl font-semibold text-center tracking-tighter">
+        Pricing
+      </h1>
+      <div className="mt-12 sm:mt-16 max-w-(--breakpoint-lg) mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
         <PricingCard
           name={basePlan?.name || "Base"}
           price={basePrice?.unitAmount || 800}
@@ -76,7 +80,7 @@ export default async function PricingPage() {
           priceId={ultimatePrice?.id}
         />
       </div>
-    </main>
+    </div>
   );
 }
 
@@ -96,22 +100,15 @@ function PricingCard({
   priceId?: string;
 }) {
   return (
-    <div className="pt-6">
-      <h2 className="text-2xl font-medium text-gray-900 mb-2">{name}</h2>
-      <p className="text-sm text-gray-600 mb-4">
-        with {trialDays} day free trial
-      </p>
-      <p className="text-4xl font-medium text-gray-900 mb-6">
-        ${price / 100}{" "}
-        <span className="text-xl font-normal text-gray-600">
-          per user / {interval}
-        </span>
-      </p>
-      <ul className="space-y-4 mb-8">
-        {features.map((feature, index) => (
-          <li key={index} className="flex items-start">
-            <Check className="h-5 w-5 text-orange-500 mr-2 mt-0.5 flex-shrink-0" />
-            <span className="text-gray-700">{feature}</span>
+    <div key={name} className="border rounded-lg p-6">
+      <h3 className="text-lg font-medium">{trialDays}</h3>
+      <p className="mt-2 text-4xl font-bold">${price}</p>
+      <p className="mt-4 font-medium text-muted-foreground">{interval}</p>
+      <Separator className="my-4" />
+      <ul className="space-y-2">
+        {features.map((feature) => (
+          <li key={feature} className="flex items-start gap-2">
+            <CircleCheck className="h-4 w-4 mt-1 text-green-600" /> {feature}
           </li>
         ))}
       </ul>

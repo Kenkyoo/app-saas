@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "motion/react";
 import { HeroHighlight, Highlight } from "@/components/ui/hero-highlight";
 import Hero from "@/components/hero";
