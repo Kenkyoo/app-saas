@@ -13,11 +13,10 @@ const Navbar = () => {
         <NavMenu className="hidden md:block" />
 
         <div className="flex items-center gap-3">
-          <ModeToggle />
+           <ModeToggle />
           <Button variant="outline" className="hidden sm:inline-flex">
             Sign In
           </Button>
-          <Button>Get Started</Button>
 
           {/* Mobile Menu */}
           <div className="md:hidden">

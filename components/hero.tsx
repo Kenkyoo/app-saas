@@ -20,23 +20,16 @@ export default function Hero() {
           </Link>
         </Badge>
         <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl md:leading-[1.2] font-semibold tracking-tighter">
-          Customized Shadcn UI Blocks & Components
+          App manager subscriptions
         </h1>
         <p className="mt-6 md:text-lg text-foreground/80">
-          Explore a collection of Shadcn UI blocks and components, ready to
-          preview and copy. Streamline your development workflow with
-          easy-to-implement examples.
+          Explore a subscriptions manager, ready to
+          pay and use. Streamline your development workflow with
+          easy-to-implement.
         </p>
         <div className="mt-12 flex items-center justify-center gap-4">
           <Button size="lg" className="rounded-full text-base">
             Get Started <ArrowUpRight className="h-5! w-5!" />
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="rounded-full text-base shadow-none"
-          >
-            <CirclePlay className="h-5! w-5!" /> Watch Demo
           </Button>
         </div>
       </div>

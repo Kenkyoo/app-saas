@@ -5,10 +5,12 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
+  SidebarHeader,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarFooter
 } from "@/components/ui/sidebar";
-import { Users, Settings, Shield, Activity, Menu } from "lucide-react";
+import { Users, Settings, Shield, Activity, Menu, Heart } from "lucide-react";
 
 const items = [
   { href: "/dashboard", icon: Users, label: "Team" },
@@ -20,7 +22,10 @@ const items = [
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarContent>
+      <SidebarHeader className="my-5 text-center">
+        Sidebar
+      </SidebarHeader>  
+      <SidebarContent className="p-5">
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -28,7 +33,7 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.label}>
                   <SidebarMenuButton asChild>
-                    <a href={item.href}>
+                    <a className="my-4" href={item.href}>
                       <item.icon />
                       <span>{item.label}</span>
                     </a>
@@ -39,6 +44,12 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter className="p-2 my-2">
+        <div className="flex gap-5">
+          <p>Dev by Kenkyo</p>
+          <Heart fill="purple"/>
+        </div>   
+      </SidebarFooter>
     </Sidebar>
   );
 }

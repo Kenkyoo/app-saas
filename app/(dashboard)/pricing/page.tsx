@@ -101,7 +101,7 @@ function PricingCard({
 }) {
   return (
     <div key={name} className="border rounded-lg p-6">
-      <h3 className="text-lg font-medium">{trialDays}</h3>
+      <h3 className="text-lg font-medium">{trialDays} free trial days</h3>
       <p className="mt-2 text-4xl font-bold">${price}</p>
       <p className="mt-4 font-medium text-muted-foreground">{interval}</p>
       <Separator className="my-4" />

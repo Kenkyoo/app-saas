@@ -32,7 +32,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function SubscriptionSkeleton() {
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Team Subscription</CardTitle>
       </CardHeader>
@@ -44,17 +44,14 @@ function ManageSubscription() {
   const { data: teamData } = useSWR<TeamDataWithMembers>("/api/team", fetcher);
 
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full px-10">
       <CardHeader>
         <CardDescription>Team Subscription</CardDescription>
         <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
           Current Plan: {teamData?.planName || "Free"}
         </CardTitle>
       </CardHeader>
-      <CardFooter className="flex-col items-start gap-1.5 text-sm">
-        <div className="line-clamp-1 flex gap-2 font-medium">
-          Trending up this month
-        </div>
+      <CardContent className="flex-col items-start gap-1.5 text-sm">
         <div className="text-muted-foreground">
           {teamData?.subscriptionStatus === "active"
             ? "Billed monthly"
@@ -62,19 +59,21 @@ function ManageSubscription() {
               ? "Trial period"
               : "No active subscription"}
         </div>
-      </CardFooter>
+      </CardContent>
+      <CardFooter>
       <form action={customerPortalAction}>
-        <Button type="submit" variant="outline">
+        <Button type="submit">
           Manage Subscription
         </Button>
       </form>
+    </CardFooter>
     </Card>
   );
 }
 
 function TeamMembersSkeleton() {
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Team Members</CardTitle>
       </CardHeader>
@@ -106,7 +105,7 @@ function TeamMembers() {
 
   if (!teamData?.teamMembers?.length) {
     return (
-      <Card className="w-full max-w-sm">
+      <Card className="w-full">
         <CardHeader>
           <CardTitle>Team Members</CardTitle>
         </CardHeader>
@@ -118,7 +117,7 @@ function TeamMembers() {
   }
 
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full px-10">
       <CardHeader>
         <CardDescription>Team Members</CardDescription>
         <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -198,20 +197,21 @@ function InviteTeamMember() {
   >(inviteTeamMember, {});
 
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full px-10">
       <CardHeader>
         <CardDescription>Invite Team Member</CardDescription>
         <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-          $1,250.00
+          Form
         </CardTitle>
       </CardHeader>
-      <CardAction>
+      <CardContent>
         <form action={inviteAction} className="space-y-4">
           <div>
             <Label htmlFor="email" className="mb-2">
               Email
             </Label>
             <Input
+              className="w-96"
               id="email"
               name="email"
               type="email"
@@ -246,7 +246,6 @@ function InviteTeamMember() {
           )}
           <Button
             type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white"
             disabled={isInvitePending || !isOwner}
           >
             {isInvitePending ? (
@@ -262,7 +261,7 @@ function InviteTeamMember() {
             )}
           </Button>
         </form>
-      </CardAction>
+      </CardContent>
       {!isOwner && (
         <CardFooter>
           <p className="text-sm text-muted-foreground">
@@ -276,7 +275,7 @@ function InviteTeamMember() {
 
 export default function SettingsPage() {
   return (
-    <div className="flex gap-8 justify-around items-center px-10">
+    <div className="flex flex-col gap-4 justify-center items-center px-10 py-5">
       <Suspense fallback={<SubscriptionSkeleton />}>
         <ManageSubscription />
       </Suspense>
