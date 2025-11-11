@@ -8,10 +8,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider style={{
-    "--sidebar-width": "20rem",
-    "--sidebar-width-mobile": "20rem",
-  }}>
+    <SidebarProvider>
       <AppSidebar />
       <SidebarTrigger />
       <main className="w-full p-5">
