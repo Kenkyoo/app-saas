@@ -32,7 +32,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function SubscriptionSkeleton() {
   return (
-    <Card className="mb-8 h-[140px]">
+    <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle>Team Subscription</CardTitle>
       </CardHeader>
@@ -44,17 +44,12 @@ function ManageSubscription() {
   const { data: teamData } = useSWR<TeamDataWithMembers>("/api/team", fetcher);
 
   return (
-    <Card className="@container/card">
+    <Card className="w-full max-w-sm">
       <CardHeader>
         <CardDescription>Team Subscription</CardDescription>
         <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
           Current Plan: {teamData?.planName || "Free"}
         </CardTitle>
-        <CardAction>
-          <Badge variant="outline">
-            Current Plan: {teamData?.planName || "Free"}
-          </Badge>
-        </CardAction>
       </CardHeader>
       <CardFooter className="flex-col items-start gap-1.5 text-sm">
         <div className="line-clamp-1 flex gap-2 font-medium">
@@ -79,7 +74,7 @@ function ManageSubscription() {
 
 function TeamMembersSkeleton() {
   return (
-    <Card className="mb-8 h-[140px]">
+    <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle>Team Members</CardTitle>
       </CardHeader>
@@ -111,7 +106,7 @@ function TeamMembers() {
 
   if (!teamData?.teamMembers?.length) {
     return (
-      <Card className="mb-8">
+      <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Team Members</CardTitle>
         </CardHeader>
@@ -123,7 +118,7 @@ function TeamMembers() {
   }
 
   return (
-    <Card className="@container/card">
+    <Card className="w-full max-w-sm">
       <CardHeader>
         <CardDescription>Team Members</CardDescription>
         <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -149,7 +144,7 @@ function TeamMembers() {
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="font-medium">
+                    <p className="text-sm font-medium">
                       {getUserDisplayName(member.user)}
                     </p>
                     <p className="text-sm text-muted-foreground capitalize">
@@ -186,7 +181,7 @@ function TeamMembers() {
 
 function InviteTeamMemberSkeleton() {
   return (
-    <Card className="h-[260px]">
+    <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle>Invite Team Member</CardTitle>
       </CardHeader>
@@ -203,7 +198,7 @@ function InviteTeamMember() {
   >(inviteTeamMember, {});
 
   return (
-    <Card className="@container/card">
+    <Card className="w-full max-w-sm">
       <CardHeader>
         <CardDescription>Invite Team Member</CardDescription>
         <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -281,7 +276,7 @@ function InviteTeamMember() {
 
 export default function SettingsPage() {
   return (
-    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+    <div className="flex gap-8 justify-around items-center px-10">
       <Suspense fallback={<SubscriptionSkeleton />}>
         <ManageSubscription />
       </Suspense>
