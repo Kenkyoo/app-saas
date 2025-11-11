@@ -56,7 +56,10 @@ const Features = () => {
               key={feature.category}
               className="flex flex-col md:flex-row items-center gap-x-12 gap-y-6 md:even:flex-row-reverse"
             >
-              <div className="w-full aspect-[4/3] bg-muted rounded-xl border border-border/50 basis-1/2" />
+              <img
+                src="/image.jpg"
+                className="w-full aspect-[4/3] rounded-xl border border-border/50 basis-1/2"
+              />
               <div className="basis-1/2 shrink-0">
                 <span className="uppercase font-medium text-sm text-muted-foreground">
                   {feature.category}
